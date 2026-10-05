@@ -189,7 +189,7 @@ medium_article_team=Team(
                   ],
     add_datetime_to_context=True,
     add_history_to_context=True,
-    num_history_runs=10,
+    num_history_runs=3,
     tools=[LocalFileSystemTools(target_directory=target_dir,default_extension="md")],
     stream=True,
     markdown=True
