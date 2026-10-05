@@ -1,303 +1,185 @@
 # 🚀 ResearchForge AI
 
-> 🔍 A multi-agent AI research & content generation system that gathers
-> insights from multiple sources 🌐, intelligently orchestrates
-> specialized agents 🤖, and transforms research into engaging,
-> Medium-ready articles ✍️ using Agno.
+**A multi-agent AI research & content generation system** that gathers insights from multiple sources 🌐, intelligently orchestrates specialized agents 🤖, and transforms research into engaging, Medium-ready articles ✍️ using **Agno**.
 
-------------------------------------------------------------------------
+![ResearchForge AI Flow](flow.png)
 
-## 💡 Overview
+## 🔎 Overview
 
-**ResearchForge AI** is a multi-agent research and content generation
-platform built with **Agno** and **Groq**.
+ResearchForge AI is an **agentic AI research and content generation system** built with **Agno**.
 
-Instead of relying on a single AI agent, the system uses a team of
-specialized research agents, where each agent focuses on a different
-information source such as **ArXiv, Web Search, Hacker News, Wikipedia,
-YouTube, Reddit, X, and news articles**.
+It uses specialized AI agents to collect information from different platforms such as **ArXiv, Web Search, Hacker News, Wikipedia, X, YouTube, Reddit, and news articles**. A central **Team Orchestrator** coordinates these agents, combines the research, and generates a structured Medium-style article.
 
-An orchestrator agent coordinates the research process, combines the
-findings, and generates a structured **Medium-style article**.
+The system also includes a **Gmail Agent** for email-related tasks and supports saving confirmed articles as Markdown files.
 
-The user reviews the generated draft, and only after confirmation is the
-final article saved as a Markdown file.
+## 🏗️ Architecture
 
-------------------------------------------------------------------------
-
-## ✨ Key Features
-
--   🤖 Multi-Agent Architecture with specialized research agents
--   🔬 ArXiv Research for academic papers and research topics
--   🌐 Web Research using Web Search & DuckDuckGo
--   📰 News Research and article content extraction
--   🧑‍💻 Hacker News research for technology trends
--   📚 Wikipedia knowledge gathering
--   𝕏 X Research with post metrics
--   ▶️ YouTube transcript, metadata and timestamp analysis
--   👥 Reddit post and subreddit research
--   📧 Gmail Agent for drafting, searching and managing emails
--   ✍️ AI-powered Medium Article Generation
--   👨‍💻 Human-in-the-loop approval before saving articles
--   📄 Markdown-based article storage
--   📥 Automatic storage of downloaded research papers
--   ⚡ AgentOS for serving the agentic application
-
-------------------------------------------------------------------------
-
-## 🧠 Architecture
-
-``` text
-                         👤 User
+```text
+                         User
                            │
                            ▼
-                    ⚡ AgentOS
+                ┌─────────────────────┐
+                │   Team Orchestrator │
+                │   GPT-OSS-120B      │
+                └──────────┬──────────┘
                            │
-                           ▼
-              🧠 Medium Article Team
-                           │
-                           ▼
-                🎯 Orchestrator Agent
-                           │
-        ┌──────────────────┼──────────────────┐
-        │                  │                  │
-        ▼                  ▼                  ▼
-   🔬 ArXiv           🌐 Web Search      🧑‍💻 Hacker News
-   Agent              Agent              Agent
-        │                  │                  │
-        ├──────────┬───────┼──────────┬───────┤
-        ▼          ▼       ▼          ▼       ▼
-     📰 News    📚 Wiki   𝕏 X      ▶️ YouTube  👥 Reddit
-     Agent      Agent     Agent      Agent      Agent
-        │
-        ▼
-   📧 Gmail Agent
-        │
-        ▼
-   📊 Research Findings
-        │
-        ▼
-   ✍️ Medium Article Draft
-        │
-        ▼
-   👤 User Approval
-        │
-        ▼
-   📄 Markdown Article
+          ┌────────────────┼────────────────┐
+          ▼                ▼                ▼
+     Research Agents   Content Research   Gmail Agent
+          │
+    ┌─────┼───────────────────────────────────────┐
+    │     │       │       │       │       │       │
+  ArXiv  Web   HackerNews News  Wikipedia  X   YouTube
+                                           │
+                                         Reddit
+    └─────────────────────┬─────────────────────────┘
+                          ▼
+                  Research Synthesis
+                          │
+                          ▼
+                Medium Article Draft
+                          │
+                    User Approval
+                          │
+                          ▼
+                   Markdown File
+                   medium_articles/
 ```
-
-------------------------------------------------------------------------
-
-## 🔄 How It Works
-
-### 1. 🎯 User provides a topic
-
-The user provides a technology, research, or current-topic query.
-
-### 2. 🧠 Orchestrator analyzes the request
-
-The team leader understands the request and decides which specialized
-research agents should be used.
-
-### 3. 🔍 Specialized agents perform research
-
-Each agent focuses on its respective information source:
-
--   🔬 **ArXiv** → Academic research papers
--   🌐 **Web Search** → Recent web information
--   🧑‍💻 **Hacker News** → Technology discussions
--   📰 **News** → Articles and reports
--   📚 **Wikipedia** → Background knowledge
--   𝕏 **X** → Social discussions and post metrics
--   ▶️ **YouTube** → Videos, transcripts and metadata
--   👥 **Reddit** → Community discussions and posts
-
-### 4. 🧩 Research is combined
-
-The orchestrator collects the relevant findings and avoids unnecessary
-additional searches once sufficient information has been gathered.
-
-### 5. ✍️ Article generation
-
-The system transforms the collected research into a structured, engaging
-Medium-style article.
-
-### 6. 👤 Human approval
-
-The generated article is presented to the user for review.
-
-### 7. 📄 Final output
-
-After confirmation, the article is saved as a `.md` file inside the
-`medium_articles/` directory.
-
-------------------------------------------------------------------------
-
-## 🛠️ Tech Stack
-
-  Technology                Purpose
-  ------------------------- ---------------------------------
-  🐍 Python                 Core application
-  🤖 Agno                   Multi-agent framework
-  ⚡ AgentOS                Agent application serving
-  🧠 Groq                   LLM inference
-  🔬 ArXivTools             Research paper discovery
-  🌐 WebSearchTools         Web research
-  🔎 DuckDuckGoTools        Web search
-  🧑‍💻 HackerNewsTools        Hacker News research
-  📰 Newspaper4kTools       News article extraction
-  📚 WikipediaTools         Wikipedia research
-  𝕏 XTools                  X post research and metrics
-  ▶️ YouTubeTools           Video and transcript research
-  👥 RedditTools            Reddit research
-  📧 GmailTools             Email management
-  💾 InMemoryDb             Agent/team state
-  📁 LocalFileSystemTools   Article and file storage
-  🔐 python-dotenv          Environment variable management
-
-------------------------------------------------------------------------
 
 ## 🤖 Specialized Agents
 
-### 🔬 ArXiv Research Agent
+| Agent                  | Responsibility                             |
+| ---------------------- | ------------------------------------------ |
+| **ArXiv Agent**        | Research papers, authors & academic topics |
+| **Web Search Agent**   | Recent web information and sources         |
+| **Hacker News Agent**  | Latest technology discussions              |
+| **News Article Agent** | Reads and summarizes online articles       |
+| **Wikipedia Agent**    | General knowledge and topic research       |
+| **X Agent**            | Posts and engagement metrics               |
+| **YouTube Agent**      | Videos, transcripts & metadata             |
+| **Reddit Agent**       | Community discussions and posts            |
+| **Gmail Agent**        | Draft, search, read and send emails        |
 
-Searches ArXiv for relevant academic papers and downloads research
-material into the `research_papers/` directory.
+## 🔄 Workflow
 
-### 🌐 Web Search Agent
+1. **User provides a topic**
+2. **Team Orchestrator analyzes the request**
+3. Relevant specialized agents perform research
+4. Research findings are **aggregated and synthesized**
+5. Orchestrator generates a **Medium-ready article**
+6. User reviews the generated draft
+7. After confirmation, the article is saved as a **Markdown (`.md`) file**
 
-Performs web research using Web Search and DuckDuckGo and returns
-relevant information and source URLs.
+## 🧠 Key Features
 
-### 🧑‍💻 Hacker News Research Agent
+* Multi-agent research architecture
+* Specialized agents for different information sources
+* Centralized **Agno Team orchestration**
+* Research synthesis and Medium-style content generation
+* Web and academic research capabilities
+* YouTube transcript and metadata analysis
+* Reddit and X research
+* Gmail integration
+* Human-in-the-loop article approval
+* Markdown article generation
+* AgentOS-based application serving
+* Conversation history support
 
-Gathers information from Hacker News and researches recent
-technology-related discussions and articles.
+## 🛠️ Tech Stack
 
-### 📰 News Article Research Agent
+**Agno, Agno Team, AgentOS, Groq, GPT-OSS-120B, GPT-OSS-20B, Python, ArXivTools, WebSearchTools, DuckDuckGoTools, HackerNewsTools, Newspaper4kTools, WikipediaTools, XTools, YouTubeTools, RedditTools, GmailTools, LocalFileSystemTools, InMemoryDb, python-dotenv**
 
-Reads online articles and extracts relevant content for research and
-summarization.
+## 📁 Project Structure
 
-### 📚 Wikipedia Research Agent
-
-Gathers background information and references from Wikipedia based on
-the requested topic.
-
-### 𝕏 X Research Agent
-
-Searches X posts related to the topic and can include available post
-metrics in its research.
-
-### ▶️ YouTube Research Agent
-
-Researches YouTube videos, transcripts, metadata and timestamps to
-extract useful information.
-
-### 👥 Reddit Research Agent
-
-Searches Reddit posts and communities to gather discussions, opinions
-and relevant information.
-
-### 📧 Gmail Agent
-
-Provides Gmail capabilities for searching, reading and drafting emails,
-with confirmation required before sending.
-
-------------------------------------------------------------------------
-
-## 📂 Project Structure
-
-``` text
+```text
 ResearchForge-AI/
 │
-├── 📁 research_papers/
-│   └── Downloaded ArXiv research papers
+├── app.py
+├── flow.png
+├── .env
 │
-├── 📁 medium_articles/
-│   └── Generated Medium articles (.md)
+├── research_papers/
+│   └── ...
 │
-├── 📄 app.py
-│   └── AgentOS application and multi-agent architecture
+├── medium_articles/
+│   └── ...
 │
-├── 📄 main.py
-│   └── Application entry point / supporting logic
-│
-├── 📄 requirements.txt
-│   └── Python dependencies
-│
-├── 📄 pyproject.toml
-│   └── Project configuration
-│
-├── 📄 uv.lock
-│   └── Locked dependency versions
-│
-├── 📄 .gitignore
-│   └── Protects secrets, virtual environments and temporary files
-│
-└── 📄 README.md
-    └── Project documentation
+└── README.md
 ```
 
-------------------------------------------------------------------------
+### 📂 Output Directories
 
-## 🔐 Security
+* `research_papers/` → Stores downloaded research papers from ArXiv.
+* `medium_articles/` → Stores approved Medium articles in Markdown format.
 
-Sensitive credentials are stored using environment variables instead of
-being hard-coded into the application.
+## ⚙️ Setup
 
-Example:
+### 1. Clone the repository
 
-``` env
-GROQ_API_KEY=your_api_key_here
+```bash
+git clone <your-repository-url>
+cd ResearchForge-AI
 ```
 
-The `.gitignore` prevents sensitive and local development files such as
-the following from being committed:
+### 2. Create a virtual environment
 
-``` text
-.env
-token.json
-credentials.json
-.venv/
-__pycache__/
+```bash
+python -m venv .venv
 ```
 
-------------------------------------------------------------------------
+Activate it:
 
-## 🎯 Project Goal
+**Windows**
 
-ResearchForge AI demonstrates how **multiple specialized AI agents can
-collaborate on a complex research workflow** instead of relying on a
-single general-purpose agent.
+```bash
+.venv\Scripts\activate
+```
 
-The project combines:
+**Linux/macOS**
 
-**Multi-Agent AI + Web Research + Information Extraction + Content
-Generation + Human-in-the-Loop**
+```bash
+source .venv/bin/activate
+```
 
-into a single practical workflow.
+### 3. Install dependencies
 
-------------------------------------------------------------------------
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+```
+
+Configure Gmail OAuth credentials separately if Gmail functionality is required.
+
+### 5. Run the application
+
+```bash
+python app.py
+```
+
+## 🎯 Why ResearchForge AI?
+
+ResearchForge AI demonstrates how **agentic AI can divide complex research workflows into specialized tasks**, coordinate multiple autonomous agents, synthesize information from diverse sources, and produce useful content with **human approval before final output**.
+
+> **Research → Orchestrate → Synthesize → Generate → Approve → Publish**
 
 ## 🚀 Future Scope
 
--   🔎 Improved source verification and citation management
--   🧠 Persistent research memory
--   📊 Research quality and source-ranking mechanisms
--   🌐 Web-based frontend dashboard
--   📝 Direct publishing workflow
--   🔄 Automated research pipelines
--   📈 Research analytics and monitoring
+* Persistent database and long-term agent memory
+* More research and productivity integrations
+* Improved source verification and citation handling
+* Automated content publishing
+* Advanced observability and agent monitoring
+* Production-ready deployment and authentication
 
-------------------------------------------------------------------------
+---
 
-## 👨‍💻 Built With
+### 👨‍💻 Built With
 
-**Agno • Groq • Python • AgentOS • ArXiv • Web Search • Hacker News •
-Wikipedia • X • YouTube • Reddit • Gmail • Newspaper4k**
-
-------------------------------------------------------------------------
-
-> ⚡ **Research smarter. Connect multiple sources. Turn knowledge into
-> content.**
+**Python • Agno • Groq • AgentOS • Multi-Agent Systems • Generative AI**
